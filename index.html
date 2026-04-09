@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KK Partizan - Statistika</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: #1a1a1a;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.3em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.05em;
+            opacity: 0.85;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 30px;
+            background: #ffffff;
+        }
+
+        /* FOLDER */
+        .folder {
+            margin-bottom: 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .folder:hover {
+            border-color: #999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .folder-header {
+            background: #f7f7f7;
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s ease;
+        }
+
+        .folder-header:hover {
+            background: #ececec;
+        }
+
+        .folder-icon {
+            font-size: 1.4em;
+            transition: transform 0.25s ease;
+            color: #555;
+        }
+
+        .folder.open .folder-icon {
+            transform: rotate(90deg);
+        }
+
+        .folder-name {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* EXPANDING CONTENT */
+        .folder-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: white;
+        }
+
+        .folder.open .folder-content {
+            max-height: 2000px;
+        }
+
+        /* FILE LIST */
+        .file-list {
+            padding: 10px;
+        }
+
+        .file-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            background: #fafafa;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s ease;
+            border: 1px solid #e5e5e5;
+        }
+
+        .file-item:hover {
+            background: #333;
+            color: white;
+            transform: translateX(5px);
+            border-color: #333;
+        }
+
+        .file-icon {
+            font-size: 1.2em;
+            color: #444;
+        }
+
+        .file-item:hover .file-icon {
+            color: #fff;
+        }
+
+        .file-name {
+            flex: 1;
+        }
+
+        .empty-folder {
+            padding: 18px;
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>80 godina KK Partizan</h1>
+            <p>Dokumentacija i statistika</p>
+        </div>
+
+        <div class="content">
+            <!-- Folder 1: Kompletna Statistika -->
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-icon">📁</span>
+                    <span class="folder-name">Kompletna Statistika</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <!--<a href="data/kompletna-statistika/ABA-igraci.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">ABA liga - statistika igrača</span>
+                        </a>
+                        <a href="data/kompletna-statistika/ABA-po-sezonama.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">ABA liga - po sezonama</span>
+                        </a>
+                        <a href="data/kompletna-statistika/ABA-zbirno.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">ABA liga - zbirna statistika</span>
+                        </a>
+                        <a href="data/kompletna-statistika/domace-prvenstvo-igraci.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Domace prvenstvo - statistika igrača</span>
+                        </a>
+                        <a href="data/kompletna-statistika/domace-prvenstvo-po-sezonama.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Domace prvenstvo - po sezonama</span>
+                        </a>
+                        <a href="data/kompletna-statistika/domace-prvenstvo-zbirno.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Domace prvenstvo - zbirna statistika</span>
+                        </a>
+                        <a href="data/kompletna-statistika/evropa-igraci.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Evropska takmicenja - statistika igrača</span>
+                        </a>
+                        <a href="data/kompletna-statistika/evropa-po-sezonama.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Evropska takmicenja - po sezonama</span>
+                        </a>
+                        <a href="data/kompletna-statistika/evropa-zbirno.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Evropska takmicenja - zbirna statistika</span>
+                        </a>
+                        <a href="data/kompletna-statistika/sve-sezone.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Statistika svih sezona</span>
+                        </a>-->
+                        <a href="data/kompletna-statistika/sve-titule.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Statistika svih titula</span>
+                        </a>
+                        <a href="data/kompletna-statistika/svi-igraci.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Statistika svih igrača</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder 2: Zanimljivosti -->
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-icon">📁</span>
+                    <span class="folder-name">Zanimljivosti</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <!--<a href="data/zanimljivosti/opste-zanimljivosti.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Opste zanimljivosti</span>
+                        </a>
+                        <a href="data/zanimljivosti/protivnici-bilans.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Protivnici Partizana - bilans svih duela</span>
+                        </a>-->
+                        <a href="data/zanimljivosti/zanimljivosti-drzavnog-prvenstva.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Zanimljivosti - Državno prvenstvo</span>
+                        </a>
+                        <a href="data/zanimljivosti/zanimljivosti-evropska-takmicenja.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Zanimljivosti - Evropska takmičenja</span>
+                        </a>
+                        <a href="data/zanimljivosti/zanimljivosti-jadranske-lige.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Zanimljivosti - Jadranske liga</span>
+                        </a>
+                        <a href="data/zanimljivosti/zanimljivosti-nacionalni-kup.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Zanimljivosti - Nacionalni kup</span>
+                        </a>
+                        <a href="data/zanimljivosti/zanimljivosti-zvanicna-takmicenja-zbirno.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Zanimljivosti - Zvanična takmičenja zbirno</span>
+                        </a>
+                        <!-- Dodajte više PDF fajlova ovde -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder 3: Treći Folder -->
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-icon">📁</span>
+                    <span class="folder-name">Igrači</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <a href="data/igraci/igraci-rang-lista.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Igrači - Rang lista</span>
+                        </a>
+                        <a href="data/igraci/igraci-trofeji.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Igrači - Trofeji</span>
+                        </a>
+                        <!--<a href="data/igraci/reprezentativci-svi.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Svi igraci Partizana u reprezentaciji</span>
+                        </a>
+                        <a href="data/igraci/reprezentativci-medalje.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Medalje igraca Partizana sa reprezentacijom</span>
+                        </a>
+                        <a href="data/igraci/tabela-strelci.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Strelci Partizana</span>
+                        </a>-->
+                        <!-- Dodajte više PDF fajlova ovde -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder 4: Treneri -->
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-icon">📁</span>
+                    <span class="folder-name">Treneri</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <a href="data/treneri/treneri-rang-lista.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Treneri - Rang lista</span>
+                        </a>
+                        <a href="data/treneri/treneri-titule.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Treneri - Trofeji</span>
+                        </a>
+                        <!--<a href="data/treneri/treneri-zbirno.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Treneri zbirno</span>
+                        </a>-->
+                        <!-- Dodajte više PDF fajlova ovde -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Folder 5: Sve sezone -->
+            <div class="folder">
+                <div class="folder-header" onclick="toggleFolder(this)">
+                    <span class="folder-icon">📁</span>
+                    <span class="folder-name">Sve sezone</span>
+                </div>
+                <div class="folder-content">
+                    <div class="file-list">
+                        <a href="data/sve-sezone/ABA-sve-sezone.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Jadranska liga sve sezone</span>
+                        </a>
+                        <a href="data/sve-sezone/Kup-sve-sezone.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Domaći kup sve sezone</span>
+                        </a>
+                        <a href="data/sve-sezone/domace-prvenstvo-sve-sezone.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Državno prvenstvo sve sezone</span>
+                        </a>
+                        <a href="data/sve-sezone/evropa-sve-sezone.pdf" target="_blank" class="file-item">
+                            <span class="file-icon">📄</span>
+                            <span class="file-name">Evropska takmičenja sve sezone</span>
+                        </a>
+                        <!-- Dodajte više PDF fajlova ovde -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function toggleFolder(header) {
+            const folder = header.parentElement;
+            folder.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
